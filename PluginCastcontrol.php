@@ -23,64 +23,64 @@ class PluginCastcontrol extends ServerPlugin
               description - description of the variable, displayed in ClientExec
         */
         $variables = array(
-            /*T*/"Name"/*/T*/ => array(
+            lang("Name") => array(
                 "type"        => "hidden",
                 "description" => "Used By CE to show plugin - must match how you call the action function names",
                 "value"       => "Castcontrol"
             ),
-            /*T*/"Description"/*/T*/ => array(
+            lang("Description") => array(
                 "type"        => "hidden",
-                "description" => /*T*/"Description viewable by admin in server settings"/*/T*/,
-                "value"       => /*T*/"Cast-Control server integration.  Note: The custom field settings are used to hold information about the clients server.  Please create these fields in admin->custom fields->packages first.  The package name on server fields for each package hold the slot count.  Suspending a server sets the slot count to 0."/*/T*/
+                "description" => lang("Description viewable by admin in server settings"),
+                "value"       => lang("Cast-Control server integration.  Note: The custom field settings are used to hold information about the clients server.  Please create these fields in admin->custom fields->packages first.  The package name on server fields for each package hold the slot count.  Suspending a server sets the slot count to 0.")
             ),
-            /*T*/"HTTP SSL"/*/T*/ => array(
+            lang("HTTP SSL") => array(
                 "type"        => "yesno",
-                "description" => /*T*/"Must also specify appropriate HTTP Port, usually 443"/*/T*/,
+                "description" => lang("Must also specify appropriate HTTP Port, usually 443"),
                 "value"       => ""
             ),
-            /*T*/"HTTP Host"/*/T*/ => array(
+            lang("HTTP Host") => array(
                 "type"        => "text",
-                "description" => /*T*/"DOMAIN/HOST, DO NOT INCLUDE http:// PREFIX (EG: mydomain.com)"/*/T*/,
+                "description" => lang("DOMAIN/HOST, DO NOT INCLUDE http:// PREFIX (EG: mydomain.com)"),
                 "value"       => ""
             ),
-            /*T*/"HTTP Port"/*/T*/ => array(
+            lang("HTTP Port") => array(
                 "type"        => "text",
-                "description" => /*T*/"SHOULD GENERALLY BE 80"/*/T*/,
+                "description" => lang("SHOULD GENERALLY BE 80"),
                 "value"       => "80"
             ),
-            /*T*/"HTTP Path"/*/T*/ => array(
+            lang("HTTP Path") => array(
                 "type"        => "text",
-                "description" => /*T*/"PATH TO THE CAST-CONTROL ROOT DIRECTORY (EG: /shoutcast/)   *MUST END IN FORWARD SLASH"/*/T*/,
+                "description" => lang("PATH TO THE CAST-CONTROL ROOT DIRECTORY (EG: /shoutcast/)   *MUST END IN FORWARD SLASH"),
                 "value"       => "/"
             ),
-            /*T*/"API Key"/*/T*/ => array(
+            lang("API Key") => array(
                 "type"        => "text",
-                "description" => /*T*/"CAST-CONTROL SECURITY HASH"/*/T*/,
+                "description" => lang("CAST-CONTROL SECURITY HASH"),
                 "value"       => ""
             ),
-            /*T*/"Portbase Custom Field"/*/T*/ => array(
+            lang("Portbase Custom Field") => array(
                 "type"        => "text",
-                "description" => /*T*/"Package Custom Field Name"/*/T*/,
+                "description" => lang("Package Custom Field Name"),
                 "value"       => ""
             ),
-            /*T*/"Username Custom Field"/*/T*/ => array(
+            lang("Username Custom Field") => array(
                 "type"        => "text",
-                "description" => /*T*/"Package Custom Field Name"/*/T*/,
+                "description" => lang("Package Custom Field Name"),
                 "value"       => ""
             ),
-            /*T*/"Password Custom Field"/*/T*/ => array(
+            lang("Password Custom Field") => array(
                 "type"        => "text",
-                "description" => /*T*/"Package Custom Field Name"/*/T*/,
+                "description" => lang("Package Custom Field Name"),
                 "value"       => ""
             ),
-            /*T*/"Actions"/*/T*/ => array(
+            lang("Actions") => array(
                 "type"        => "hidden",
-                "description" => /*T*/"Current actions that are active for this plugin per server"/*/T*/,
+                "description" => lang("Current actions that are active for this plugin per server"),
                 "value"       => "Create,Delete,Suspend,UnSuspend"
             ),
-            /*T*/'package_vars_values'/*/T*/ => array(
+            lang('package_vars_values') => array(
                 'type'        => 'hidden',
-                'description' => /*T*/'Hosting account parameters'/*/T*/,
+                'description' => lang('Hosting account parameters'),
                 'value'       => array(
                     'BitRate' => array(
                         'type'        => 'text',
@@ -92,39 +92,39 @@ class PluginCastcontrol extends ServerPlugin
                     'MaxUsers' => array(
                         'type'        => 'text',
                         'size'        => '5',
-                        'description' => /*T*/'Listener Slots'/*/T*/,
+                        'description' => lang('Listener Slots'),
                         'value'       => '25',
                     ),
                     'Bandwidth' => array(
                         'type'        => 'text',
                         'size'        => '5',
-                        'description' => /*T*/'Bandwidth'/*/T*/,
+                        'description' => lang('Bandwidth'),
                         'value'       => '0',
                     ),
                     'AutoDJ' => array(
                         'type'        => 'yesno',
                         'size'        => '5',
-                        'description' => /*T*/'Allow AutoDJ'/*/T*/,
+                        'description' => lang('Allow AutoDJ'),
                         'options'     => 'enabled,disabled',
                         'value'       => ''
                     ),
                     'AutoDJ Quota' => array(
                         'type'        => 'text',
                         'size'        => '5',
-                        'description' => /*T*/'AutoDJ Quota'/*/T*/,
+                        'description' => lang('AutoDJ Quota'),
                         'value'       => '25',
                     ),
                     'Trial' => array(
                         'type'        => 'text',
                         'size'        => '15',
-                        'description' => /*T*/'Set Trial Period for example: +5 days'/*/T*/,
+                        'description' => lang('Set Trial Period for example: +5 days'),
                         'options'     => '',
                         'value'       => ''
                     ),
                     'SystemID' => array(
                         'type'        => 'text',
                         'size'        => '5',
-                        'description' => /*T*/'SystemID'/*/T*/,
+                        'description' => lang('SystemID'),
                         'value'       => '25',
                     )
                 )
