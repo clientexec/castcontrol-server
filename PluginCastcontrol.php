@@ -16,7 +16,8 @@ class PluginCastcontrol extends ServerPlugin
     /*****************************************************************/
     // function getVariables - required function
     /*****************************************************************/
-    function getVariables(){
+    function getVariables()
+    {
         /* Specification
               itemkey     - used to identify variable in your other functions
               type        - text,textarea,yesno,password
@@ -146,7 +147,7 @@ class PluginCastcontrol extends ServerPlugin
         $username = $package->getCustomField($params['server']['variables']['plugin_castcontrol_Username_Custom_Field'], CUSTOM_FIELDS_FOR_PACKAGE);
         $password = $package->getCustomField($params['server']['variables']['plugin_castcontrol_Password_Custom_Field'], CUSTOM_FIELDS_FOR_PACKAGE);
 
-        if(empty($username) || empty($password)){
+        if (empty($username) || empty($password)) {
             $errormsg = "The username or password contains no value";
             CE_Lib::log(4, "plugin_castcontrol::create::error: ".$errormsg);
             throw new CE_Exception($errormsg);
@@ -163,25 +164,25 @@ class PluginCastcontrol extends ServerPlugin
         $api['password']      = $password;
         $api['email_address'] = $params['customer']['email'];
 
-        if($response = api($api)){
+        if ($response = api($api)) {
             list($status, $msg) = explode(",", $response);
 
-            if($status != 'Success' && strstr($response, 'incorrect_password')){
+            if ($status != 'Success' && strstr($response, 'incorrect_password')) {
                 $errormsg = "This username already exists or you have entered incorrect credentials. :: ".$response;
                 CE_Lib::log(4, "plugin_castcontrol::create::error: ".$errormsg);
                 throw new CE_Exception($errormsg);
             }
 
-            if($status != 'Success' && $msg != 'User already exists'){
+            if ($status != 'Success' && $msg != 'User already exists') {
                 $errormsg = "There was a problem creating the user account in cast-control :: $response";
                 CE_Lib::log(4, "plugin_castcontrol::create::error: ".$errormsg);
                 throw new CE_Exception($errormsg);
             }
-        }elseif($this->apierror == 'auth_failed'){
+        } elseif ($this->apierror == 'auth_failed') {
             $errormsg = "Cast-Control API Authentication error, please check API Key";
             CE_Lib::log(4, "plugin_castcontrol::create::error: ".$errormsg);
             throw new CE_Exception($errormsg);
-        }else{
+        } else {
             $errormsg = "Could not communicate with the Cast-Control API";
             CE_Lib::log(4, "plugin_castcontrol::create::error: ".$errormsg);
             throw new CE_Exception($errormsg);
@@ -205,40 +206,40 @@ class PluginCastcontrol extends ServerPlugin
         $api['autodj']        = (isset($params["package"]['variables']["AutoDJ"]) && $params['package_vars']['AutoDJ']==1)? 'Enabled' : 'Disabled';
         $api['autodj_upload'] = $params["package"]['variables']["AutoDJ_Quota"];
 
-        if(isset($params["package"]['variables']["Trial"])
+        if (isset($params["package"]['variables']["Trial"])
           && $params["package"]['variables']["Trial"] != ''
-          &&  $params["package"]['variables']["Trial"] != 'disabled'){
+          &&  $params["package"]['variables']["Trial"] != 'disabled') {
             $api['expire'] =$params["package"]['variables']["Trial"];
         }
-        if(!empty($params["package"]['variables']["SystemID"])){
+        if (!empty($params["package"]['variables']["SystemID"])) {
             $api['system'] = $params["package"]['variables']["SystemID"];
         }
-        if(isset($params["package"]['addons']['MaxUsers'])){
+        if (isset($params["package"]['addons']['MaxUsers'])) {
             $api['slots'] = $params["package"]['addons']['MaxUsers'];
         }
-        if(isset($params["package"]['addons']['BitRate'])){
+        if (isset($params["package"]['addons']['BitRate'])) {
             $api['bitrate'] = $params["package"]['addons']['BitRate'];
         }
-        if(isset($params["package"]['addons']['Bandwidth'])){
+        if (isset($params["package"]['addons']['Bandwidth'])) {
             $api['bandwidth'] = $params["package"]['addons']['Bandwidth'];
         }
-        if(isset($params["package"]['addons']['AutoDJ'])){
+        if (isset($params["package"]['addons']['AutoDJ'])) {
             $api['autodj'] = $params["package"]['addons']['AutoDJ'];
         }
-        if(isset($params["package"]['addons']['AutoDJQuota'])){
+        if (isset($params["package"]['addons']['AutoDJQuota'])) {
             $api['autodj_upload'] = $params["package"]['addons']['AutoDJQuota'];
         }
-        if(isset($params["package"]['addons']['System'])){
+        if (isset($params["package"]['addons']['System'])) {
             $api['SystemID'] = $params["package"]['addons']['System'];
         }
 
         // Check the API response
-        if($response = api($api)){
+        if ($response = api($api)) {
             // Here we have successfully connected and authenticated to the cast-control API
             list($status, $portbase, $msg) = explode(",", $response);
 
             // Check for anything other than success
-            if($status != 'Success'){
+            if ($status != 'Success') {
                 $errormsg = "There was a problem creating the server in cast-control:: '$status' :: {$response}";
                 CE_Lib::log(4, "plugin_castcontrol::create::error: ".$errormsg);
                 throw new CE_Exception($errormsg);
@@ -246,11 +247,11 @@ class PluginCastcontrol extends ServerPlugin
 
             $package = new UserPackage($params['package']['id'], $this->user);
             $package->setCustomField($params['server']['variables']['plugin_castcontrol_Portbase_Custom_Field'], $portbase);
-        }elseif($this->apierror == 'auth_failed'){
+        } elseif ($this->apierror == 'auth_failed') {
             $errormsg = "Cast-Control API Authentication error, please check API Key";
             CE_Lib::log(4, "plugin_castcontrol::create::error: ".$errormsg);
             throw new CE_Exception($errormsg);
-        }else{
+        } else {
             // API FAILED
             // Ussually either no connection has been established
             // or  the API key is incorrect.
@@ -276,7 +277,7 @@ class PluginCastcontrol extends ServerPlugin
         $portbase = $package->getCustomField($params['server']['variables']['plugin_castcontrol_Portbase_Custom_Field'], CUSTOM_FIELDS_FOR_PACKAGE);
 
         // If protbase is empty, ignore the process as no server was assigned
-        if(empty($portbase)){
+        if (empty($portbase)) {
             return;
         }
 
@@ -289,12 +290,12 @@ class PluginCastcontrol extends ServerPlugin
         $api['port']      = $portbase;
 
         // Check API response
-        if($response = api($api)){
+        if ($response = api($api)) {
             // Here we have successfully connected and authenticated to the cast-control API
             list($status, $msg) = explode(",", $response);
 
             // Check for anything other than success
-            if($status != 'Success'){
+            if ($status != 'Success') {
                 $errormsg = "There was a problem terminating the server in cast-control:: {$response}";
                 CE_Lib::log(4, "plugin_castcontrol::delete::error: ".$errormsg);
                 throw new CE_Exception($errormsg);
@@ -302,11 +303,11 @@ class PluginCastcontrol extends ServerPlugin
 
             $package = new UserPackage($params['package']['id'], $this->user);
             $package->setCustomField($params['server']['variables']['plugin_castcontrol_Portbase_Custom_Field'], '');
-        }elseif($this->apierror == 'auth_failed'){
+        } elseif ($this->apierror == 'auth_failed') {
             $errormsg = "Cast-Control API Authentication error, please check API Key";
             CE_Lib::log(4, "plugin_castcontrol::delete::error: ".$errormsg);
             throw new CE_Exception($errormsg);
-        }else{
+        } else {
             // API FAILED
             // Ussually either no connection has been established
             // or  the API key is incorrect.
@@ -338,7 +339,7 @@ class PluginCastcontrol extends ServerPlugin
         $portbase = $package->getCustomField($params['server']['variables']['plugin_castcontrol_Portbase_Custom_Field'], CUSTOM_FIELDS_FOR_PACKAGE);
 
         // If protbase is empty, ignore the process as no server was assigned
-        if(empty($portbase)){
+        if (empty($portbase)) {
             return;
         }
 
@@ -353,21 +354,21 @@ class PluginCastcontrol extends ServerPlugin
         $api['days']      = 9999999999999; // indefinite
 
         // Check for an API response
-        if($response = api($api)){
+        if ($response = api($api)) {
             // Here we have successfully connected and authenticated to the cast-control API
             list($status, $msg) = explode(",", $response);
 
             // Check for anything other than a success
-            if($status != 'Success'){
+            if ($status != 'Success') {
                 $errormsg = "There was a problem suspending the server:: {$response}";
                 CE_Lib::log(4, "plugin_castcontrol::suspend::error: ".$errormsg);
                 throw new CE_Exception($errormsg);
             }
-        }elseif($this->apierror == 'auth_failed'){
+        } elseif ($this->apierror == 'auth_failed') {
             $errormsg = "Cast-Control API Authentication error, please check API Key";
             CE_Lib::log(4, "plugin_castcontrol::suspend::error: ".$errormsg);
             throw new CE_Exception($errormsg);
-        }else{
+        } else {
             // API FAILED
             // Ussually either no connection has been established
             // or  the API key is incorrect.
@@ -393,7 +394,7 @@ class PluginCastcontrol extends ServerPlugin
         $portbase = $package->getCustomField($params['server']['variables']['plugin_castcontrol_Portbase_Custom_Field'], CUSTOM_FIELDS_FOR_PACKAGE);
 
         // If protbase is empty, ignore the process as no server was assigned
-        if(empty($portbase)){
+        if (empty($portbase)) {
             return;
         }
 
@@ -406,21 +407,21 @@ class PluginCastcontrol extends ServerPlugin
         $api['port']      = $portbase;
         $api['start']     = true;
 
-        if($response = api($api)){
+        if ($response = api($api)) {
             // Here we have successfully connected and authenticated to the cast-control API
             list($status, $msg) = explode(",", $response);
 
             // Check for anything other than success
-            if($status != 'Success'){
+            if ($status != 'Success') {
                 $errormsg = "There was a problem unsuspending the server:: {$response}";
                 CE_Lib::log(4, "plugin_castcontrol::unsuspend::error: ".$errormsg);
                 throw new CE_Exception($errormsg);
             }
-        }elseif($this->apierror == 'auth_failed'){
+        } elseif ($this->apierror == 'auth_failed') {
             $errormsg = "Cast-Control API Authentication error, please check API Key";
             CE_Lib::log(4, "plugin_castcontrol::unsuspend::error: ".$errormsg);
             throw new CE_Exception($errormsg);
-        }else{
+        } else {
             // API FAILED
             // Ussually either no connection has been established
             // or  the API key is incorrect.
@@ -464,17 +465,17 @@ function api($api)
     $connection = fsockopen($scheme.$api['http_host'], $api['http_port'], $errno, $errstr, 8);
 
     // If no connection then fail
-    if(!$connection){
+    if (!$connection) {
         $this->apierror = 'no_connection';
         return false;
-    }else{
+    } else {
         $send = '';
-        foreach($api as $option => $setting){
-            if(strstr($option, 'http_')){
+        foreach ($api as $option => $setting) {
+            if (strstr($option, 'http_')) {
                 continue;
             }
-            if(is_array($setting)){
-                $setting = serialize( $setting );
+            if (is_array($setting)) {
+                $setting = serialize($setting);
             }
 
             $send .= $option .'='. urlencode($setting) .'&';
@@ -491,18 +492,18 @@ function api($api)
         $headers .= $request."\r\n";
 
         // Send headers to the open connection
-        fputs( $connection, $headers);
+        fputs($connection, $headers);
 
         // Return feedback
         $res = '';
-        while(!feof($connection)){
-            $res .= fgets ($connection, 1024);
+        while (!feof($connection)) {
+            $res .= fgets($connection, 1024);
         }
 
         fclose($connection);
 
         // If gets to here, we are successfully verified
-        if(strstr($res, "Error,Your API Key is not valid")){
+        if (strstr($res, "Error,Your API Key is not valid")) {
             $this->apierror = 'auth_failed';
             return false;
         }
@@ -510,4 +511,3 @@ function api($api)
         return urldecode($res);
     }
 }
-?>
